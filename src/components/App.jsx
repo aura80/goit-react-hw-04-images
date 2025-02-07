@@ -16,9 +16,10 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (query === '') return;
 
     const fetchImages = async () => {
+      if (query === '') return;
+
       const API_KEY = '47192464-fcc47f6df3479fe275626acec';
       const URL = `https://pixabay.com/api/?q=${query}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
 
@@ -28,7 +29,7 @@ const App = () => {
         const response = await axios.get(URL);
         console.log('Hits: ', response.data.hits);
         setImages(previousImages => [...previousImages, ...response.data.hits]);
-        setIsLoading(false);
+        // setIsLoading(false);
       } catch (error) {
         console.error('Error at fetch: ', error);
         setIsLoading(false);
