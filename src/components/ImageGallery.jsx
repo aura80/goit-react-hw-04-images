@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
+import { nanoid } from 'nanoid';
 import styles from './ImageGallery.module.css';
 import ImageGalleryItem from "./ImageGalleryItem";
-import { nanoid } from 'nanoid';
 
 const ImageGallery = ({ images, onImageClick }) => (
   <ul className={styles.gallery}>
