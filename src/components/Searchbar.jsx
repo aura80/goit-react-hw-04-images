@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import styles from './Searchbar.module.css';
+import { useContext, useState, useRef } from 'react';
+import { SearchContext } from './SearchContext';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import styles from './Searchbar.module.css';
 
-const Searchbar = ({onSubmit}) => {
+const Searchbar = () => {
+  const { onSubmit } = useContext(SearchContext);
   const [query, setQuery] = useState('');
+  const inputRef = useRef(null);
 
   const handleChange = (event) => {
     const { value } = event.target;
@@ -16,6 +18,9 @@ const Searchbar = ({onSubmit}) => {
     event.preventDefault();
     onSubmit(query);
     setQuery('');
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }
 
   return (
@@ -34,14 +39,11 @@ const Searchbar = ({onSubmit}) => {
           placeholder="Search images and photos"
           value={query}
           onChange={handleChange}
+          ref={inputRef}
         />
       </form>
     </header>
   );
-}
-
-Searchbar.propTypes = {
-    onSubmit: PropTypes.func.isRequired
 }
 
 export default Searchbar;

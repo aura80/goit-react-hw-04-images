@@ -1,12 +1,12 @@
+import { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ImageGalleryItem.module.css';
 
-
-const ImageGalleryItem = ({ image, onImageClick }) => (
-  <li className={styles.galleryItem} onClick={() => onImageClick(image.largeImageURL, image.tags)}>
+const ImageGalleryItem = forwardRef(({ image, onImageClick }, ref) => (
+  <li className={styles.galleryItem} ref={ref} onClick={() => onImageClick(image.largeImageURL, image.tags)}>
     <img src={image.webformatURL} alt={image.tags} />
   </li>
-);
+));
 
 ImageGalleryItem.propTypes = {
   image: PropTypes.shape({

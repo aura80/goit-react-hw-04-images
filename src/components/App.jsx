@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { SearchContext } from './SearchContext';
+import { ModalContext } from './ModalContext';
+import { GalleryContext } from './GalleryContext';
 import axios from 'axios';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
@@ -63,19 +66,21 @@ const App = () => {
   };
 
   return (
-    <div>
-      <Searchbar onSubmit={handleSearchSubmit} />
-      <ImageGallery images={images} onImageClick={handleImageClick} />
-      {showModal && (
-        <Modal
-          largeImageUrl={largeImageUrl}
-          alt={alt}
-          onClose={toggleModal}
-        />
-      )}
-      {isLoading && <Loader />}
-      <Button onClick={loadMore} isVisible={images.length > 0} />
-    </div>
+    <SearchContext.Provider value={{ onSubmit: handleSearchSubmit }}>
+      <ModalContext.Provider
+        value={{ largeImageUrl, alt, onClose: toggleModal }}
+      >
+        <GalleryContext.Provider value={{ images, onImageClick: handleImageClick }}>
+          <div>
+            <Searchbar />
+            <ImageGallery />
+            {showModal && <Modal />}
+            {isLoading && <Loader />}
+            <Button onClick={loadMore} isVisible={images.length > 0} />
+          </div>
+        </GalleryContext.Provider>
+      </ModalContext.Provider>
+    </SearchContext.Provider>
   );
 };
 

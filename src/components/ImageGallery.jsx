@@ -1,29 +1,31 @@
-import PropTypes from 'prop-types';
+import { useContext, useRef, useEffect } from 'react';
+import { GalleryContext } from './GalleryContext';
 import { nanoid } from 'nanoid';
-import styles from './ImageGallery.module.css';
 import ImageGalleryItem from "./ImageGalleryItem";
+import styles from './ImageGallery.module.css';
 
-const ImageGallery = ({ images, onImageClick }) => (
-  <ul className={styles.gallery}>
-    {images.map(image => (
-      <ImageGalleryItem
-        key={image.id || nanoid()}
-        image={image}
-        onImageClick={onImageClick}
-      />
-    ))}
-  </ul>
-);
+const ImageGallery = () => {
+  const { images, onImageClick } = useContext(GalleryContext);
+  const firstImgRef = useRef(null);
 
-ImageGallery.propTypes = {
-  images: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      webformatURL: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onImageClick: PropTypes.func.isRequired,
+  useEffect(() => {
+    if (firstImgRef.current) {
+      firstImgRef.current.focus();
+    }
+  }, [images]);
+
+  return (
+    <ul className={styles.gallery}>
+      {images.map((image, index) => (
+        <ImageGalleryItem
+          key={`${image.id}-${nanoid()}`} // to avoid id duplicates
+          image={image}
+          onImageClick={onImageClick}
+          ref={index === 0 ? firstImgRef : null}
+        />
+      ))}
+    </ul>
+  );
 };
 
 export default ImageGallery;

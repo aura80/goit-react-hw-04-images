@@ -1,16 +1,27 @@
+import { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './Button.module.css';
 
 const Button = ({ onClick, isVisible }) => {
-    if (!isVisible) return null;
+  const buttonLoadMoreRef = useRef(null);
 
-    return (
-      <section className={styles.buttonSection}>
-        <button className={styles.buttoncls} onClick={onClick}>
-          Load more
-        </button>
-      </section>
-    );
+  useEffect(
+    () => {
+      if (isVisible && buttonLoadMoreRef.current) {
+        buttonLoadMoreRef.current.focus(); // focus on button when it is visible
+      }
+    }, [isVisible]
+  );
+
+  if (!isVisible) return null;
+
+  return (
+    <section className={styles.buttonSection}>
+      <button className={styles.buttoncls} onClick={onClick}>
+        Load more
+      </button>
+    </section>
+  );
 };
 
 Button.propTypes = {

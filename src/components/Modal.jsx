@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useRef, useContext } from 'react';
+import { ModalContext } from './ModalContext';
 import styles from './Modal.module.css';
 
-const Modal = ({ largeImageUrl, alt, onClose }) => {
+const Modal = () => {
+  const { largeImageUrl, alt, onClose } = useContext(ModalContext);
+  const imageRef = useRef(null);
 
   useEffect(() => {
     console.log('Modal mounted');
@@ -33,17 +35,11 @@ const Modal = ({ largeImageUrl, alt, onClose }) => {
     <div className={styles.overlay} onClick={handleBackdropClick}>
       <div className={styles.modal}>
         <div className={styles['image-container']}>
-          <img src={largeImageUrl} alt={alt} />
+          <img src={largeImageUrl} alt={alt} ref={imageRef} />
         </div>
       </div>
     </div>
   );
-};
-
-Modal.propTypes = {
-  largeImageUrl: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default Modal;
